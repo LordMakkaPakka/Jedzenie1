@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Kup jedzenie potrzebującym</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    button {
+      background-color: #2196F3;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
+    }
+    .item {
+      margin: 20px 0;
+    }
+    img {
+      width: 100px;
+    }
+  </style>
+</head>
+<body>
+
+  <button onclick="showStore()">Kup jedzenie potrzebującym</button>
+
+  <div id="store" class="hidden">
+    <div class="item">
+      <h3>Kebab (5.00 zł)</h3>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Kebab.jpg/320px-Kebab.jpg" alt="Kebab"><br>
+      <button onclick="decrease('kebab')">-</button>
+      <span id="kebabCount">0</span>
+      <button onclick="increase('kebab')">+</button>
+    </div>
+
+    <div class="item">
+      <h3>Burger (2.50 zł)</h3><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Hamburger_%28black_bg%29.jpg/320px-Hamburger_%28black_bg%29.jpg" alt="Burger"><br>
+      <button onclick="decrease('burger')">-</button>
+      <span id="burgerCount">0</span>
+      <button onclick="increase('burger')">+</button>
+    </div>
+
+    <h2 id="total">Łącznie: 0.00 zł</h2>
+    <button onclick="confirmOrder()">Kup</button>
+    <p id="thanks" class="hidden">Dziękujemy za zakup jedzenia!</p>
+  </div>
+
+  <script>
+    let kebab = 0;
+    let burger = 0;
+
+    function showStore() {
+      document.getElementById("store").classList.remove("hidden");
+    }
+
+    function increase(item) {
+      if (item === 'kebab') kebab++;
+      if (item === 'burger') burger++;
+      update();
+    }
+
+    function decrease(item) {
+      if (item === 'kebab' && kebab > 0) kebab--;
+      if (item === 'burger' && burger > 0) burger--;
+      update();
+    }
+
+    function update() {
+      document.getElementById("kebabCount").innerText = kebab;
+      document.getElementById("burgerCount").innerText = burger;
+      const total = (kebab * 5 + burger * 2.5).toFixed(2);
+      document.getElementById("total").innerText = "Łącznie: " + total + " zł";
+    }
+
+    function confirmOrder() { document.getElementById("thanks").classList.remove("hidden");
+    }
+  </script>
+
+</body>
+</html>
