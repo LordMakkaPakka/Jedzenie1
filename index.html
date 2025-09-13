@@ -29,124 +29,61 @@
     img {
       width: 100px;
     }
-    #receipt {
-      background-color: #1e1e1e;
-      padding: 20px;
-      margin-top: 20px;
-      border: 1px solid #333;
-      display: inline-block;
-      text-align: left;
-    }
   </style>
 </head>
 <body>
 
-  <button id="startBtn" onclick="showStore()">Kup jedzenie potrzebującym</button>
+  <button onclick="showStore()">Kup jedzenie potrzebującym</button>
 
   <div id="store" class="hidden">
     <div class="item">
       <h3>Kebab (5.00 zł)</h3>
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Kebab.jpg/320px-Kebab.jpg" alt="Kebab"><br>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Kebab.jpg/320px-Kebab.jpg" alt="Kebab"><br>
       <button onclick="decrease('kebab')">-</button>
       <span id="kebabCount">0</span>
       <button onclick="increase('kebab')">+</button>
     </div>
 
     <div class="item">
-      <h3>Burger (2.50 zł)</h3>
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Hamburger_%28black_bg%29.jpg/320px-Hamburger_%28black_bg%29.jpg" alt="Burger"><br>
+      <h3>Burger (2.50 zł)</h3><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Hamburger_%28black_bg%29.jpg/320px-Hamburger_%28black_bg%29.jpg" alt="Burger"><br>
       <button onclick="decrease('burger')">-</button>
       <span id="burgerCount">0</span>
       <button onclick="increase('burger')">+</button>
     </div>
 
-    <div class="item">
-      <h3>Frytki (3.00 zł)</h3>
-      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/French_Fries.JPG" alt="Frytki"><br>
-      <button onclick="decrease('frytki')">-</button>
-      <span id="frytkiCount">0</span>
-      <button onclick="increase('frytki')">+</button>
-    </div>
-
-    <div class="item">
-      <h3>Sałatka (4.00 zł)</h3>
-      <img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Salad_plated.jpg" alt="Sałatka"><br>
-      <button onclick="decrease('salatka')">-</button>
-      <span id="salatkaCount">0</span>
-      <button onclick="increase('salatka')">+</button>
-    </div>
-<div class="item">
-      <h3>Kotlet Schabowy (6.50 zł)</h3>
-      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0a/Kotlet_schabowy.jpg" alt="Kotlet"><br>
-      <button onclick="decrease('kotlet')">-</button>
-      <span id="kotletCount">0</span>
-      <button onclick="increase('kotlet')">+</button>
-    </div>
-
-    <div class="item">
-      <h3>Ziemniaki (2.00 zł)</h3>
-      <img src="https://upload.wikimedia.org/wikipedia/commons/8/88/Patates.jpg" alt="Ziemniaki"><br>
-      <button onclick="decrease('ziemniaki')">-</button>
-      <span id="ziemniakiCount">0</span>
-      <button onclick="increase('ziemniaki')">+</button>
-    </div>
-
     <h2 id="total">Łącznie: 0.00 zł</h2>
     <button onclick="confirmOrder()">Kup</button>
-  </div>
-
-  <div id="thanks" class="hidden">
-    <h2>Dziękujemy za zakup jedzenia!</h2>
-    <div id="receipt"></div>
+    <p id="thanks" class="hidden">Dziękujemy za zakup jedzenia!</p>
   </div>
 
   <script>
-    let items = {
-      kebab: { count: 0, price: 5.00 },
-      burger: { count: 0, price: 2.50 },
-      frytki: { count: 0, price: 3.00 },
-      salatka: { count: 0, price: 4.00 },
-      kotlet: { count: 0, price: 6.50 },
-      ziemniaki: { count: 0, price: 2.00 }
-    };
+    let kebab = 0;
+    let burger = 0;
 
     function showStore() {
-      document.getElementById("startBtn").classList.add("hidden");
-document.getElementById("store").classList.remove("hidden");
+      document.getElementById("store").classList.remove("hidden");
     }
 
     function increase(item) {
-      items[item].count++;
+      if (item === 'kebab') kebab++;
+      if (item === 'burger') burger++;
       update();
     }
 
     function decrease(item) {
-      if (items[item].count > 0) items[item].count--;
+      if (item === 'kebab' && kebab > 0) kebab--;
+      if (item === 'burger' && burger > 0) burger--;
       update();
     }
 
     function update() {
-      for (let item in items) {
-        document.getElementById(item + "Count").innerText = items[item].count;
-      }
-      const total = Object.values(items).reduce((sum, i) => sum + i.count * i.price, 0).toFixed(2);
+      document.getElementById("kebabCount").innerText = kebab;
+      document.getElementById("burgerCount").innerText = burger;
+      const total = (kebab * 5 + burger * 2.5).toFixed(2);
       document.getElementById("total").innerText = "Łącznie: " + total + " zł";
     }
 
-    function confirmOrder() {
-      document.getElementById("store").classList.add("hidden");
-      document.getElementById("thanks").classList.remove("hidden");
-
-      let receiptText = "<h3>Paragon</h3><ul>";
-      let total = 0;
-      for (let item in items) {
-        if (items[item].count > 0) {
-          const cost = (items[item].count * items[item].price).toFixed(2);
-          receiptText += `<li>item.charAt(0).toUpperCase() + item.slice(1) x{items[item].count} = cost zł</li>`;
-          total += parseFloat(cost);
-        
-      receiptText += `</ul><strong>Razem:{total.toFixed(2)} zł</strong>`;
-      document.getElementById("receipt").innerHTML = receiptText;
+    function confirmOrder() { document.getElementById("thanks").classList.remove("hidden");
     }
   </script>
 
